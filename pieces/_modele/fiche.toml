@@ -1,0 +1,30 @@
+# Fiche d'une piece du catalogue Microduck. Copie ce dossier, renomme-le (ex. pieces/casque-viking/), remplis la fiche,
+# ajoute une ou plusieurs photos (jpg, png ou webp : la premiere par ordre alphabetique est la couverture).
+# Les dossiers qui commencent par « _ » sont ignores (comme ce modele).
+
+nom = "Casque viking"
+description = """
+Une coque de tête avec deux petites cornes. Se monte à la place du dessus de tête d'origine, mêmes vis.
+"""
+categorie = "tête"            # tête, corps, pieds, accessoire, support, autre
+auteur = "RaphaelGrj"
+licence = "CC BY-NC 4.0"
+
+# Impression (facultatif)
+materiau = "PLA"
+temps = "3 h 20"
+filament_g = 45
+supports = false
+
+# Ou le telecharger : au moins un lien (https), ou « bientot = true » tant qu'il n'est pas publie
+printables = "https://www.printables.com/model/000000-casque-viking-microduck"
+cults = "https://cults3d.com/fr/modele-3d/divers/casque-viking-microduck"
+# autre = "https://..."       # un autre site
+# bientot = true
+
+# Essayer sur mon Microduck (facultatif) : la piece d'origine qu'elle remplace, et son STL d'apercu dans ce dossier.
+# Dessine-la a partir du STL d'origine, dans le meme repere : elle se pose alors exactement a sa place.
+remplace = "top_head_shell"
+# apercu = "apercu.stl"
+
+# publie = false             # brouillon : la fiche reste hors du catalogue

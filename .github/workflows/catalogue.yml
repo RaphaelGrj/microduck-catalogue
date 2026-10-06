@@ -1,0 +1,31 @@
+# A chaque envoi : verifie les fiches et met a jour catalogue.json (lu par l'application Microduck).
+name: Catalogue
+on:
+  push:
+    branches: [main]
+    paths: ["pieces/**", "outils/**", ".github/workflows/catalogue.yml"]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  catalogue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verifier les fiches
+        run: python3 outils/construire.py --verifier
+      - name: Ecrire catalogue.json
+        if: github.event_name != 'pull_request'
+        run: |
+          python3 outils/construire.py
+          if ! git diff --quiet -- catalogue.json || [ -n "$(git status --porcelain catalogue.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add catalogue.json
+            git commit -m "Catalogue mis a jour"
+            git push
+          fi
