@@ -104,6 +104,18 @@ Les tours composés dans le studio de l'application se partagent ici, un fichier
 Elles apparaissent dans le studio, rubrique **Du catalogue**. Seuls les gestes, les sons de canard, les positions de
 tête, s'asseoir et les pauses sont acceptés, comme dans l'appli.
 
+## Schémas de couleurs
+
+Les schémas du design space se partagent ici, un fichier par schéma : `schemas/<nom>.json` (voir
+`schemas/noir-et-orange.json`). Pour en proposer un :
+
+1. Dans le design de l'application, utilise **Exporter mes schémas** (un fichier avec tous tes schémas) ou le bouton ⇪
+   d'un schéma (texte ou QR code).
+2. Garde un schéma par fichier, ajoute « auteur » et « description » si tu veux.
+
+Les schémas apparaissent dans le design, rubrique **Schémas du catalogue** : « Voir » les essaie sur le Microduck 3D,
+« Ajouter » les garde.
+
 ## Fonctionnement
 
 `outils/construire.py` lit les fiches et écrit `catalogue.json` ; `.github/workflows/catalogue.yml` le lance à chaque

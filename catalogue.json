@@ -1,7 +1,7 @@
 {
  "version": 1,
  "depot": "RaphaelGrj/microduck-catalogue",
- "maj": "2026-10-06T19:38Z",
+ "maj": "2026-10-06T20:28Z",
  "pieces": [
   {
    "id": "coque-superieure-origine",
@@ -54,6 +54,23 @@
      "son": "wheee"
     }
    ]
+  }
+ ],
+ "schemas": [
+  {
+   "id": "noir-et-orange",
+   "nom": "Noir et orange",
+   "auteur": "RaphaelGrj",
+   "description": "Exemple : coques et tête noires, face blanche, bec et pieds orange Microduck.",
+   "couleurs": {
+    "dessus_tete": "#2b2a30",
+    "coques": "#2b2a30",
+    "cuisses": "#2b2a30",
+    "face": "#f2f1ec",
+    "bec": "#f26a1b",
+    "pieds": "#f26a1b",
+    "dessous_tete": "#f26a1b"
+   }
   }
  ]
 }

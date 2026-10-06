@@ -5,6 +5,7 @@
     python3 outils/construire.py --verifier # verifie seulement (erreur si une fiche est fausse)
 """
 import json
+import re
 import sys
 import tomllib
 from datetime import datetime, timezone
@@ -20,6 +21,9 @@ APERCU_MAX = 8 * 1024 * 1024
 GCODE_MAX = 64 * 1024 * 1024          # (le canard refuse au-dela)
 # choregraphies : ce que le studio de l'application sait jouer (choregraphies.py de microduck-brain)
 SONS = {"alarm", "greet", "inquire", "peck", "chirp", "coo", "wheee"}
+# schemas de couleurs : groupes de pieces imprimables du design space (interface/design/microduck.json)
+GROUPES = {"dessus_tete", "dessous_tete", "face", "bec", "bec_souple", "oeil", "coques", "chassis", "cou", "hanches",
+           "cuisses", "jambes", "pieds", "semelles", "support_batterie"}
 GESTES = {"baillement", "content", "curieux", "ebouriffe", "eternuement", "etirement", "fatigue", "fier", "gene",
           "lissage", "non", "oui", "surpris"}
 # pieces d'origine imprimables qu'une piece du catalogue peut remplacer (noms des STL officiels de microduck_rl)
@@ -103,6 +107,25 @@ def fiche(dossier, erreurs):
     }
 
 
+def schema(chemin, erreurs):
+    """schemas/<id>.json : {"nom", "auteur", "description", "couleurs": {groupe: "#rrggbb"}} (export du design space)."""
+    try:
+        s = json.loads(chemin.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        erreurs.append(f"{chemin.name}: illisible ({e})")
+        return None
+    if isinstance(s, dict) and isinstance(s.get("schema"), dict):
+        s = {**s["schema"], **{k: s[k] for k in ("auteur", "description") if k in s}}
+    nom = str((s or {}).get("nom") or "").strip()[:40]
+    couleurs = (s or {}).get("couleurs") if isinstance((s or {}).get("couleurs"), dict) else {}
+    faux = [g for g, v in couleurs.items() if g not in GROUPES or not re.fullmatch(r"#[0-9a-fA-F]{6}", str(v))]
+    if not nom or not couleurs or faux:
+        erreurs.append(f"{chemin.name}: « nom » et « couleurs » {{groupe: #rrggbb}} attendus" + (f" (inconnu : {faux})" if faux else ""))
+        return None
+    return {"id": chemin.stem, "nom": nom, "auteur": s.get("auteur"), "description": str(s.get("description") or "").strip(),
+            "couleurs": {g: v.lower() for g, v in couleurs.items()}}
+
+
 def choregraphie(chemin, erreurs):
     """choregraphies/<id>.json : {"nom", "auteur", "description", "etapes": [...]} (format de l'export de l'appli)."""
     try:
@@ -139,8 +162,14 @@ def construire():
             c = choregraphie(chemin, erreurs)
             if c:
                 choregraphies.append(c)
+    schemas = []
+    if (RACINE / "schemas").is_dir():
+        for chemin in sorted((RACINE / "schemas").glob("*.json")):
+            sc = schema(chemin, erreurs)
+            if sc:
+                schemas.append(sc)
     return {"version": 1, "depot": DEPOT, "maj": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
-            "pieces": pieces, "choregraphies": choregraphies}, erreurs
+            "pieces": pieces, "choregraphies": choregraphies, "schemas": schemas}, erreurs
 
 
 def main():
@@ -149,7 +178,8 @@ def main():
         print("ERREUR", e)
     if erreurs:
         sys.exit(1)
-    print(f"{len(catalogue['pieces'])} piece(s), {len(catalogue['choregraphies'])} choregraphie(s)")
+    print(f"{len(catalogue['pieces'])} piece(s), {len(catalogue['choregraphies'])} choregraphie(s), "
+          f"{len(catalogue['schemas'])} schema(s)")
     if "--verifier" not in sys.argv:
         ancien = {}
         try:
