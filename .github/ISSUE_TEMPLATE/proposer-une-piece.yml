@@ -1,0 +1,33 @@
+name: Proposer une pièce
+description: Une pièce imprimable pour Microduck, à ajouter au catalogue (sans passer par une pull request).
+labels: ["nouvelle pièce"]
+body:
+  - type: input
+    id: nom
+    attributes: { label: Nom de la pièce, placeholder: "Casque viking" }
+    validations: { required: true }
+  - type: dropdown
+    id: categorie
+    attributes: { label: Catégorie, options: ["tête", "corps", "pieds", "accessoire", "support", "autre"] }
+    validations: { required: true }
+  - type: textarea
+    id: description
+    attributes: { label: Description, description: "À quoi elle sert, comment elle se monte, matériau conseillé." }
+    validations: { required: true }
+  - type: input
+    id: liens
+    attributes: { label: Liens (Printables, Cults…), placeholder: "https://www.printables.com/model/…" }
+    validations: { required: true }
+  - type: input
+    id: licence
+    attributes: { label: Licence, placeholder: "CC BY-NC 4.0" }
+  - type: textarea
+    id: photos
+    attributes: { label: Photos, description: "Glisse 1 à 4 photos ici (4:3, fond clair)." }
+  - type: checkboxes
+    id: accord
+    attributes:
+      label: Accord
+      options:
+        - label: Ce sont mes photos et ma pièce (ou j'ai l'accord de son auteur).
+          required: true

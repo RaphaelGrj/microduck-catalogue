@@ -10,6 +10,8 @@ Ce dépôt ne contient **pas** les fichiers à imprimer : chaque pièce renvoie 
 [Printables](https://www.printables.com) ou [Cults](https://cults3d.com), où on la télécharge. Il contient juste une
 fiche, des photos et, si tu veux, un STL d'aperçu pour l'essayer en 3D sur son Microduck dans l'appli.
 
+Envie de proposer ta pièce ? Voir [`CONTRIBUTING.md`](CONTRIBUTING.md) (pull request, ou simple *issue*).
+
 ## Ajouter une pièce (depuis github.com, même sur téléphone)
 
 1. **Créer la fiche** : bouton **Add file → Create new file**. Dans le nom, tape `pieces/casque-viking/fiche.toml`
