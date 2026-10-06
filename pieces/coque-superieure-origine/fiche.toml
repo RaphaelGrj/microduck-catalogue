@@ -1,0 +1,19 @@
+# Exemple de fiche, sur une vraie piece : la coque superieure de tete d'origine du Microduck.
+# Copie ce dossier pour une nouvelle piece (pieces/<nom-de-ta-piece>/), puis remplace les photos et l'apercu.
+
+nom = "Coque supérieure de tête (origine)"
+description = """
+La coque du dessus de la tête, telle que Pollen Robotics la dessine. Elle sert de référence : pour une coque \
+personnalisée, pars de ce STL et garde son repère, ta pièce se posera exactement au même endroit.
+"""
+categorie = "tête"
+auteur = "Pollen Robotics"
+licence = "Apache-2.0"
+ajoute = "2026-10-06"
+
+# Le fichier officiel (depot microduck_rl de Pollen Robotics). Pour tes pieces : printables = "...", cults = "..."
+autre = "https://github.com/pollen-robotics/microduck_rl/blob/main/src/mjlab_microduck/robot/microduck/assets/top_head_shell.stl"
+
+# Essayer sur mon Microduck : le STL d'origine lui-meme (en metres, l'appli convertit aussi les mm)
+remplace = "top_head_shell"
+apercu = "apercu.stl"

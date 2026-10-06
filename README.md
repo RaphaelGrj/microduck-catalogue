@@ -3,6 +3,9 @@
 Les pièces imprimables pour **[Microduck](https://github.com/pollen-robotics/microduck)** (Pollen Robotics), telles
 qu'elles apparaissent dans la **marketplace de l'application Microduck** (icône sac en haut à droite).
 
+**Exemple complet** : [`pieces/coque-superieure-origine/`](pieces/coque-superieure-origine) (la coque de tête
+d'origine : fiche, deux photos, aperçu 3D). Pour rester uniforme, pars de ce dossier.
+
 Ce dépôt ne contient **pas** les fichiers à imprimer : chaque pièce renvoie vers sa page sur
 [Printables](https://www.printables.com) ou [Cults](https://cults3d.com), où on la télécharge. Il contient juste une
 fiche, des photos et, si tu veux, un STL d'aperçu pour l'essayer en 3D sur son Microduck dans l'appli.
@@ -10,11 +13,13 @@ fiche, des photos et, si tu veux, un STL d'aperçu pour l'essayer en 3D sur son 
 ## Ajouter une pièce (depuis github.com, même sur téléphone)
 
 1. **Créer la fiche** : bouton **Add file → Create new file**. Dans le nom, tape `pieces/casque-viking/fiche.toml`
-   (le `/` crée le dossier). Colle le contenu de [`pieces/_modele/fiche.toml`](pieces/_modele/fiche.toml), remplis-le,
+   (le `/` crée le dossier). Colle le contenu de [`pieces/_modele/fiche.toml`](pieces/_modele/fiche.toml) (tous les champs expliqués) ou de
+   la fiche de l'exemple, remplis-le,
    puis **Commit changes**.
 2. **Ajouter les photos** (et l'aperçu) : ouvre le dossier `pieces/casque-viking/`, **Add file → Upload files**, glisse
-   tes photos (jpg, png ou webp ; la première par ordre alphabétique sert de couverture, ex. `1-face.jpg`) et, si tu
-   veux, `apercu.stl`. **Commit changes**.
+   tes photos (jpg, png ou webp ; la première par ordre alphabétique sert de couverture : numérote-les comme
+   l'exemple, `1-….jpg`, `2-….jpg`) et, si tu veux, `apercu.stl`. **Commit changes**.
+   Photos conseillées : 4:3 (ex. 1200 × 900), fond clair, la pièce seule puis montée sur le Microduck.
 3. C'est tout. En une minute, le robot du dépôt (onglet **Actions**) vérifie la fiche et met `catalogue.json` à jour.
    L'appli le voit à la prochaine ouverture de la marketplace.
 
