@@ -80,6 +80,30 @@ Pour qu'une pièce se pose sur le Microduck 3D de l'appli :
 | `power_support` | Support de batterie |
 | `banana_pcb_locker` | Verrou de carte |
 
+## Prêt à imprimer (G-code)
+
+Une pièce peut fournir un G-code **déjà tranché** pour une imprimante précise. Pose le fichier `.bgcode` ou `.gcode`
+dans le dossier de la pièce, puis déclare-le dans la fiche avec un bloc `[[fichier]]` : nom du fichier, imprimante,
+matériau (voir `pieces/_modele/fiche.toml`).
+
+Dans l'application, un bouton **Envoyer à l'imprimante** apparaît sur la pièce. Le téléphone télécharge le fichier
+ici, puis le canard le dépose sur ta Prusa du réseau local (PrusaLink). Il peut aussi lancer l'impression.
+
+- Le canard ne va jamais sur Internet.
+- La clé API de l'imprimante reste sur le canard.
+- Taille maximale : 64 Mo par fichier.
+
+## Chorégraphies
+
+Les tours composés dans le studio de l'application se partagent ici, un fichier par chorégraphie :
+`choregraphies/<nom>.json`. Pour en proposer une :
+
+1. Dans le studio, utilise **Exporter** pour obtenir le fichier.
+2. Ajoute-le dans le dossier `choregraphies/` (voir `choregraphies/coucou.json`).
+
+Elles apparaissent dans le studio, rubrique **Du catalogue**. Seuls les gestes, les sons de canard, les positions de
+tête, s'asseoir et les pauses sont acceptés, comme dans l'appli.
+
 ## Fonctionnement
 
 `outils/construire.py` lit les fiches et écrit `catalogue.json` ; `.github/workflows/catalogue.yml` le lance à chaque

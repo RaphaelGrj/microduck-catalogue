@@ -3,7 +3,7 @@ name: Catalogue
 on:
   push:
     branches: [main]
-    paths: ["pieces/**", "outils/**", ".github/workflows/catalogue.yml"]
+    paths: ["pieces/**", "choregraphies/**", "outils/**", ".github/workflows/catalogue.yml"]
   pull_request:
   workflow_dispatch:
 permissions:

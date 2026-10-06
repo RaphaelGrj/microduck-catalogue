@@ -27,4 +27,11 @@ cults = "https://cults3d.com/fr/modele-3d/divers/casque-viking-microduck"
 remplace = "top_head_shell"
 # apercu = "apercu.stl"
 
+# Pret a imprimer (facultatif) : un G-code deja tranche, dans ce dossier, pour une imprimante donnee. Depuis
+# l'application, « Envoyer a l'imprimante » le pose sur une Prusa du reseau local (PrusaLink). Un bloc par fichier.
+# [[fichier]]
+# nom = "casque-viking_mk4s_pla.bgcode"
+# imprimante = "Prusa MK4S"
+# materiau = "PLA"
+
 # publie = false             # brouillon : la fiche reste hors du catalogue

@@ -1,7 +1,7 @@
 {
  "version": 1,
  "depot": "RaphaelGrj/microduck-catalogue",
- "maj": "2026-10-06T16:10Z",
+ "maj": "2026-10-06T19:38Z",
  "pieces": [
   {
    "id": "coque-superieure-origine",
@@ -22,7 +22,38 @@
    "remplace": "top_head_shell",
    "remplace_nom": "Dessus de la tête",
    "apercu": "https://raw.githubusercontent.com/RaphaelGrj/microduck-catalogue/main/pieces/coque-superieure-origine/apercu.stl",
-   "ajoute": "2026-10-06"
+   "ajoute": "2026-10-06",
+   "fichiers": []
+  }
+ ],
+ "choregraphies": [
+  {
+   "id": "coucou",
+   "nom": "Coucou",
+   "auteur": "RaphaelGrj",
+   "description": "Exemple : il dit bonjour, tourne la tête vers toi, acquiesce et lance un « youpi ».",
+   "etapes": [
+    {
+     "type": "son",
+     "son": "greet"
+    },
+    {
+     "type": "tete",
+     "cou": 0,
+     "tangage": -0.2,
+     "lacet": 0.6,
+     "roulis": 0.2,
+     "duree": 1
+    },
+    {
+     "type": "geste",
+     "geste": "oui"
+    },
+    {
+     "type": "son",
+     "son": "wheee"
+    }
+   ]
   }
  ]
 }

@@ -17,6 +17,11 @@ BRUT = f"https://raw.githubusercontent.com/{DEPOT}/main/"
 CATEGORIES = ["tête", "corps", "pieds", "accessoire", "support", "autre"]
 IMAGES = {".jpg", ".jpeg", ".png", ".webp"}
 APERCU_MAX = 8 * 1024 * 1024
+GCODE_MAX = 64 * 1024 * 1024          # (le canard refuse au-dela)
+# choregraphies : ce que le studio de l'application sait jouer (choregraphies.py de microduck-brain)
+SONS = {"alarm", "greet", "inquire", "peck", "chirp", "coo", "wheee"}
+GESTES = {"baillement", "content", "curieux", "ebouriffe", "eternuement", "etirement", "fatigue", "fier", "gene",
+          "lissage", "non", "oui", "surpris"}
 # pieces d'origine imprimables qu'une piece du catalogue peut remplacer (noms des STL officiels de microduck_rl)
 REMPLACABLES = {
     "top_head_shell": "Dessus de la tête", "bottom_head_shell": "Dessous de la tête", "face_part": "Face",
@@ -73,6 +78,18 @@ def fiche(dossier, erreurs):
             erreurs.append(f"{dossier.name}: apercu trop gros (8 Mo au plus : allege-le)")
         if remplace is None:
             erreurs.append(f"{dossier.name}: un apercu demande « remplace » (la piece d'origine qu'il remplace)")
+    fichiers = []
+    for k, x in enumerate(f.get("fichier") or []):
+        chemin = dossier / str(x.get("nom", ""))
+        if not chemin.is_file() or chemin.suffix.lower() not in (".bgcode", ".gcode"):
+            erreurs.append(f"{dossier.name}: fichier n°{k + 1} « {x.get('nom')} » introuvable (.bgcode ou .gcode de ce dossier)")
+        elif chemin.stat().st_size > GCODE_MAX:
+            erreurs.append(f"{dossier.name}: {x.get('nom')} trop gros (64 Mo au plus)")
+        elif not str(x.get("imprimante") or "").strip():
+            erreurs.append(f"{dossier.name}: fichier « {x.get('nom')} » : « imprimante » manquante (ex. Prusa MK4S)")
+        else:
+            fichiers.append({"nom": chemin.name, "imprimante": str(x["imprimante"]).strip(), "url": base + quote(chemin.name),
+                             "materiau": x.get("materiau"), "octets": chemin.stat().st_size})
     return {
         "id": dossier.name, "nom": nom, "description": str(f.get("description") or "").strip(),
         "categorie": categorie, "auteur": f.get("auteur"), "licence": f.get("licence"),
@@ -82,7 +99,31 @@ def fiche(dossier, erreurs):
         "remplace": remplace, "remplace_nom": REMPLACABLES.get(remplace),
         "apercu": base + quote(str(apercu)) if apercu else None,
         "ajoute": str(f.get("ajoute")) if f.get("ajoute") else None,
+        "fichiers": fichiers,
     }
+
+
+def choregraphie(chemin, erreurs):
+    """choregraphies/<id>.json : {"nom", "auteur", "description", "etapes": [...]} (format de l'export de l'appli)."""
+    try:
+        c = json.loads(chemin.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        erreurs.append(f"{chemin.name}: illisible ({e})")
+        return None
+    c = c.get("choregraphie", c) if isinstance(c, dict) else {}
+    nom = str(c.get("nom") or "").strip()[:40]
+    etapes = c.get("etapes") if isinstance(c.get("etapes"), list) else []
+    if not nom or not etapes or len(etapes) > 40:
+        erreurs.append(f"{chemin.name}: « nom » et 1 a 40 « etapes » attendus")
+        return None
+    for k, e in enumerate(etapes):
+        t = e.get("type") if isinstance(e, dict) else None
+        if t not in ("tete", "son", "geste", "assis", "pause") or (t == "son" and e.get("son") not in SONS) \
+                or (t == "geste" and e.get("geste") not in GESTES):
+            erreurs.append(f"{chemin.name}: etape n°{k + 1} inconnue ({e})")
+            return None
+    return {"id": chemin.stem, "nom": nom, "auteur": c.get("auteur"), "description": str(c.get("description") or "").strip(),
+            "etapes": etapes}
 
 
 def construire():
@@ -92,8 +133,14 @@ def construire():
             p = fiche(dossier, erreurs)
             if p:
                 pieces.append(p)
+    choregraphies = []
+    if (RACINE / "choregraphies").is_dir():
+        for chemin in sorted((RACINE / "choregraphies").glob("*.json")):
+            c = choregraphie(chemin, erreurs)
+            if c:
+                choregraphies.append(c)
     return {"version": 1, "depot": DEPOT, "maj": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"),
-            "pieces": pieces}, erreurs
+            "pieces": pieces, "choregraphies": choregraphies}, erreurs
 
 
 def main():
@@ -102,7 +149,7 @@ def main():
         print("ERREUR", e)
     if erreurs:
         sys.exit(1)
-    print(f"{len(catalogue['pieces'])} piece(s)")
+    print(f"{len(catalogue['pieces'])} piece(s), {len(catalogue['choregraphies'])} choregraphie(s)")
     if "--verifier" not in sys.argv:
         ancien = {}
         try:
